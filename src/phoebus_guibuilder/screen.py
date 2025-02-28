@@ -1,32 +1,37 @@
 import phoebusgen.screen as Screen
 import phoebusgen.widget as Widget
 
+from phoebus_guibuilder.datatypes import Entry
+
 
 class TechUIScreens:
-    def __init__(
-        self, screen_name: str, Prefix: list[str], Suffix: list[str], ui_map: list[str]
-    ):
+    def __init__(self, screen_components: list[Entry], screen: dict):
+        self.screen_components = screen_components
+        self.screen_ = Screen.Screen(self.screen_components[0].DESC)
         widgets = []
 
         self.P: str = "P"
         self.M: str = "M"
 
-        screen = Screen.Screen(screen_name)
-        for order, ui in enumerate(ui_map):
+        for order, ui in enumerate(self.screen_components):
+            if ui.M is not None:
+                name = ui.M
+            else:
+                name = ui.type
+
             widgets.append(
                 Widget.EmbeddedDisplay(
-                    "MOTOR", ui, (10 + 2 * order), (10 + 2 * order), 700, 700
+                    name,
+                    "./techui-support/bob/" + screen[ui.type]["file"],
+                    (10 + 2 * order),
+                    (10 + 2 * order),
+                    700,
+                    700,
                 )
             )
-            widgets[order].macro(self.P, Prefix[order])
-            widgets[order].macro(self.M, Suffix[order])
+            widgets[order].macro(self.P, ui.P)
+            widgets[order].macro(self.M, ui.M)
 
-            screen.add_widget(widgets[order])
+            self.screen_.add_widget(widgets[order])
 
-        screen.write_screen("first_screen.bob")
-
-    def create_screen(self, screen: str):
-        Screen.Screen(screen)
-
-
-TechUIScreens("Motor", ["BL01T-MO-STAGE-01"], ["X"], ["./techui-support/bob/MOTOR.bob"])
+        self.screen_.write_screen(self.screen_components[0].DESC + ".bob")
