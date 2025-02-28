@@ -664,7 +664,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "phoebusgen" },
+    { name = "phoebusgen", specifier = ">=3.0.0" },
     { name = "pyyaml", specifier = ">=6.0.2" },
 ]
 
