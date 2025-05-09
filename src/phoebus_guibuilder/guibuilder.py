@@ -1,5 +1,6 @@
 import os
 import re
+from pathlib import Path
 
 import yaml
 
@@ -13,16 +14,20 @@ class Guibuilder:
     create_gui.yaml file into screens mapped from ioc.yaml and
     gui_map.yaml files.
 
+    By default it looks for a `create_gui.yaml` file in the same dir
+    of the script Guibuilder is called in. Optionally a custom path
+    can be declared.
+
     """
 
-    def __init__(self, create_gui_yaml: str):
+    def __init__(self, create_gui_yaml: str | Path = Path("create_gui.yaml")):
         self.components: list[Component] = []
 
         self.beamline: Beamline
 
         self.valid_entities: list[Entry] = []
 
-        self.create_gui: str = create_gui_yaml
+        self.create_gui = create_gui_yaml
 
         self.extract_from_create_gui()
 
