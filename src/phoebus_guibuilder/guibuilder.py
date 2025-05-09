@@ -1,5 +1,6 @@
 import os
 import re
+from pathlib import Path
 
 import yaml
 
@@ -15,14 +16,14 @@ class Guibuilder:
 
     """
 
-    def __init__(self, create_gui_yaml: str):
+    def __init__(self, create_gui_yaml: str | Path):
         self.components: list[Component] = []
 
         self.beamline: Beamline
 
         self.valid_entities: list[Entry] = []
 
-        self.create_gui: str = create_gui_yaml
+        self.create_gui = create_gui_yaml
 
         self.extract_from_create_gui()
 
